@@ -37,14 +37,14 @@
  
  
 #include <SoftwareSerial.h>
-
-#include "split.h"
-#include "read_serial.h"
+#include "DFRobot_utility.h"
 #include "DFPlayer_Mini_Mp3.h"
 
 #define BUFSIZE 20
+#define CMDNUM 8
+
 uint8_t buf[BUFSIZE];
-char *cmdbuf[8];
+char *cmdbuf[CMDNUM];
 
 //
 void setup () {
@@ -113,6 +113,10 @@ void loop () {
                         } 
                         else if (strcmp (cmdbuf[0], "current") == 0) {
                                 mp3_get_tf_current ();
+                                print_info ();
+                        }
+                        else if (strcmp (cmdbuf[0], "volume") == 0) {
+                                mp3_get_volume ();
                                 print_info ();
                         }
                 } 

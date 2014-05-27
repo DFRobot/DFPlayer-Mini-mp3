@@ -268,8 +268,8 @@ void mp3_get_flash_current () {
 
 //
 void mp3_single_loop (boolean state) {
-	send_buf[3] = 0x0d;
-	fill_uint16_bigend ((send_buf+5), !!state);
+	send_buf[3] = 0x19;
+	fill_uint16_bigend ((send_buf+5), !state);
 	//	if (state)
 	//		fill_uint16_bigend ((send_buf+5), 0);
 	//	else
@@ -279,11 +279,8 @@ void mp3_single_loop (boolean state) {
 
 //
 void mp3_DAC (boolean state) {
-	send_buf[3] = 0x0d;
-	if (state)
-		fill_uint16_bigend ((send_buf+5), 0);
-	else
-		fill_uint16_bigend ((send_buf+5), 1);
+	send_buf[3] = 0x1a;
+	fill_uint16_bigend ((send_buf+5), !state);
 	mp3_send_cmd ();
 }
 
