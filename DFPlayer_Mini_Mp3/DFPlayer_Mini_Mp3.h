@@ -47,15 +47,15 @@ uint8_t recv_buf[10];
 //* SoftwareSerial *sserial = NULL;
 //* boolean is_reply = false;
 
-//7E FF 06 0F 00 01 01 xx xx EF
-//0-> 7E is start code
-//1-> FF is version
-//2-> 06 is length
-//3-> 0F is command
-//4-> 00 is no receive
-//5~6-> 01 01 is argument
-//7~8-> checksum = 0 - ( FF+06+0F+00+01+01 )
-//9-> EF is end code
+// 7E FF 06 0F 00 01 01 xx xx EF
+// 0	->	7E is start code
+// 1	->	FF is version
+// 2	->	06 is length
+// 3	->	0F is command
+// 4	->	00 is no receive
+// 5~6	->	01 01 is argument
+// 7~8	->	checksum = 0 - ( FF+06+0F+00+01+01 )
+// 9	->	EF is end code
 
 void mp3_set_reply (boolean state); 
 
@@ -83,7 +83,7 @@ void s_send_func ();
 void mp3_send_cmd (); 
 
 //
-uint16_t get_mp3_checksum (uint8_t *thebuf); 
+uint16_t mp3_get_checksum (uint8_t *thebuf); 
 
 //
 void mp3_fill_checksum (); 
@@ -121,7 +121,7 @@ void mp3_pause ();
 //
 void mp3_stop (); 
 
-//
+//specify a mp3 file in mp3 folder
 void mp3_play_mp3 (uint16_t num); 
 
 //

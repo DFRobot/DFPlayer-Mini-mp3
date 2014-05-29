@@ -33,6 +33,21 @@
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-22
  *	Description:	mp3 library for DFPlayer mini board
+ *
+ *	this code is test on leonardo
+ *	you can try input:
+ *	play			//play current music
+ *	play 3			//play 0003.mp3
+ *	next			//play next
+ *	prev			//paly previous
+ *	pause			//pause	current play
+ *	stop			//stop current play
+ *	state 			//get current state of module
+ *	current			//get current track of tf card
+ *	volume			//get current volume 
+ *	volume 20		//set volume to 20 (0~30)
+ *	single open/close 	//set if single loop
+ *	reply open/close	//set if need reply
  */
  
  
@@ -40,11 +55,11 @@
 #include "DFRobot_utility.h"
 #include "DFPlayer_Mini_Mp3.h"
 
-#define BUFSIZE 20
-#define CMDNUM 8
+#define BUFSIZE 20	//buf size
+#define CMDNUM 8	//cmdbuf size
 
-uint8_t buf[BUFSIZE];
-char *cmdbuf[CMDNUM];
+uint8_t buf[BUFSIZE]; //data buffer for read from Serial
+char *cmdbuf[CMDNUM]; //for split string from buf
 
 //
 void setup () {
@@ -52,7 +67,7 @@ void setup () {
         Serial.begin (9600);
         while (!Serial);
 
-        mp3_set_serial (&Serial1);
+        mp3_set_serial (&Serial1);	//set Serial1 for DFPlayer-mini mp3 module 
         mp3_set_volume (15);
         mp3_get_tf_sum ();
         print_info ();
@@ -72,31 +87,35 @@ void print_info () {
 //
 void loop () {        
         int leng;
-        leng = read_serial_with_timeout (Serial1, buf, BUFSIZE, 3);
+        leng = read_serial_with_timeout (Serial1, buf, BUFSIZE, 3); //first read data from Serial1
         if (leng) {
                 Serial.print ("=>");
                 print_hex (buf, 10);
         }
-        leng = read_serial_with_timeout (Serial, buf, BUFSIZE, 3);
+        leng = read_serial_with_timeout (Serial, buf, BUFSIZE, 3); //read command to buf from Serial (PC)
         if (leng) {
                 buf[leng] = '\0';
                 Serial.println ((char*)buf);
-                int cmdleng = split(cmdbuf, (char*)buf, 8);
-                if (cmdleng == 1) {
+                int cmdleng = split(cmdbuf, (char*)buf, 8); //split command string to cmdbuf
+                if (cmdleng >= 1) {
                         if (strcmp (cmdbuf[0], "next") == 0) {
                                 mp3_next ();
                                 print_info ();
                         } 
-                        else if (strcmp (cmdbuf[0], "prev") == 0) {
-                                mp3_prev ();
-                                print_info ();
+			else if (strcmp (cmdbuf[0], "play") == 0) {
+				if (cmdleng == 2) {
+					mp3_play (atoi (cmdbuf[1])); //get arguments
+				} else {
+					mp3_play ();
+				}
+				print_info ();
+			}
+			else if (strcmp (cmdbuf[0], "prev") == 0) {
+				mp3_prev ();
+				print_info ();
                         } 
                         else if (strcmp (cmdbuf[0], "stop") == 0) {
                                 mp3_stop ();
-                                print_info ();
-                        } 
-                        else if (strcmp (cmdbuf[0], "next") == 0) {
-                                mp3_next ();
                                 print_info ();
                         } 
                         else if (strcmp (cmdbuf[0], "pause") == 0) {
@@ -116,83 +135,39 @@ void loop () {
                                 print_info ();
                         }
                         else if (strcmp (cmdbuf[0], "volume") == 0) {
-                                mp3_get_volume ();
+				if (cmdleng == 2) {
+					mp3_set_volume (atoi (cmdbuf[1]));
+				} else {
+					mp3_get_volume ();
+				}
                                 print_info ();
                         }
-                } 
-                else if (cmdleng == 2) {
-                        if (strcmp (cmdbuf[0], "play") == 0) {
-                                mp3_play (atoi (cmdbuf[1]));
-                                print_info ();
-                        }
-                        else if (strcmp (cmdbuf[0], "volume") == 0) {
-                                mp3_set_volume (atoi (cmdbuf[1]));
-                                print_info ();
-                        }
-                        else if (strcmp (cmdbuf[0], "reply") == 0) {
-                                if (strcmp (cmdbuf[1], "true") == 0)
+                        else if (strcmp (cmdbuf[0], "reply") == 0 && cmdleng == 2) {
+                                if (strcmp (cmdbuf[1], "open") == 0)
                                         mp3_set_reply (true);
-                                else if (strcmp (cmdbuf[1], "false") == 0)
+                                else if (strcmp (cmdbuf[1], "close") == 0)
                                         mp3_set_reply (false);
                                 print_info ();
                         }
-                        else if (strcmp (cmdbuf[0], "mp3") == 0) {
+                        else if (strcmp (cmdbuf[0], "mp3") == 0 && cmdleng == 2) {
                                 mp3_play_mp3 (atoi (cmdbuf[1]));
                                 print_info ();
                         }
-                        else if (strcmp (cmdbuf[0], "eq") == 0) {
+                        else if (strcmp (cmdbuf[0], "eq") == 0 && cmdleng == 2) {
                                 mp3_set_EQ (atoi (cmdbuf[1]));
                                 print_info ();
                         }
-                        else if (strcmp (cmdbuf[0], "single") == 0) {
-                                if (strcmp (cmdbuf[1], "true") == 0)
+                        else if (strcmp (cmdbuf[0], "single") == 0 && cmdleng == 2) {
+                                if (strcmp (cmdbuf[1], "open") == 0)
                                         mp3_single_loop (true);
-                                else if (strcmp (cmdbuf[1], "false") == 0)
+                                else if (strcmp (cmdbuf[1], "close") == 0)
                                         mp3_single_loop (false);
                                 print_info ();
-                        }
-                }
-
-///////////////////////////////////////////////////////////
-//                if (cmdleng == 1) {
-//                        switch (cmdbuf[0][0]) {
-//                        case 't':
-//                                mp3_stop ();
-//                                break;
-//                        case 'n':
-//                                mp3_next ();
-//                                break;
-//                        case 'p':
-//                                mp3_prev ();
-//                                break;
-//                        case 's':
-//                                mp3_sleep ();
-//                                break;
-//                        case 'r':
-//                                mp3_reset ();
-//                                break;
-//                        }
-//                }
-//                else if (cmdleng == 2) {
-//                        switch (cmdbuf[0][0]) {
-//                        case 'p':
-//                                mp3_play (atoi (cmdbuf[1]));
-//                                break;
-//                        case 'v':
-//                                mp3_set_volume (atoi (cmdbuf[1]));
-//                                break;
-//                        case 'm':
-//                                mp3_play_mp3 (atoi (cmdbuf[1]));
-//                                break;
-//
-//                        }
-//                }
-//////////////////////////////////////////////////
-
+                        } else {
+				Serial.println ("error! no this command");
+			}
+                } 
         }
 }
-
-
-
 
 
