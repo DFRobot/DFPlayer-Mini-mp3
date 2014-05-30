@@ -29,133 +29,58 @@
 
 /*
  *	Copyright:	DFRobot
- *	name:		DFPlayer_Mini_Mp3
- *	version:	1.0
+ *	name:		DFPlayer_Mini_Mp3 sample code
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-22
  *	Description:	mp3 library for DFPlayer mini board
+ *	this code is test on Uno
  */
-#include "Arduino.h"
-#include "SoftwareSerial.h"
 
-uint8_t send_buf[10] = {
-	0x7E, 0xFF, 06, 00, 00, 00, 00, 00, 00, 0xEF};
-uint8_t recv_buf[10];
 
-//* void(*send_func)() = NULL;
-//* HardwareSerial *hserial = NULL;
-//* SoftwareSerial *sserial = NULL;
-//* boolean is_reply = false;
-
-// 7E FF 06 0F 00 01 01 xx xx EF
-// 0	->	7E is start code
-// 1	->	FF is version
-// 2	->	06 is length
-// 3	->	0F is command
-// 4	->	00 is no receive
-// 5~6	->	01 01 is argument
-// 7~8	->	checksum = 0 - ( FF+06+0F+00+01+01 )
-// 9	->	EF is end code
-
-void mp3_set_reply (boolean state); 
-
-void mp3_fill_cmd (uint8_t cmd, uint16_t arg);
+#include <SoftwareSerial.h>
+#include <DFRobot_utility.h>
+#include <DFPlayer_Mini_Mp3.h>
 
 //
-void fill_uint16_bigend (uint8_t *thebuf, uint16_t data);
+void setup () {
+	Serial.begin (9600);
+	mp3_set_serial (&Serial);	//set Serial1 for DFPlayer-mini mp3 module 
+	mp3_play ();
+	delay (6000);
+}
 
-//error because it is biggend mode in mp3 module
-//void fill_uint16 (uint8_t *thebuf, uint16_t data) {
-//        *(uint16_t*)(thebuf) = data;
-//}
-
-//
-void mp3_set_serial (HardwareSerial *theSerial); 
 
 //
-void mp3_set_serial (SoftwareSerial *theSerial); 
+void loop () {        
+	mp3_next ();
+	delay (6000);
+	mp3_prev ();
+	delay (6000);
+	mp3_play (4);
+	delay (6000);
+	mp3_play (1);
+	delay (6000);
+}
 
-//
-void h_send_func (); 
-
-//
-void s_send_func (); 
-
-//
-void mp3_send_cmd (); 
-
-//
-uint16_t mp3_get_checksum (uint8_t *thebuf); 
-
-//
-void mp3_fill_checksum (); 
-
-//
-void mp3_play (uint16_t num); 
-
-//
-void mp3_next (); 
-
-//
-void mp3_prev (); 
-
-//0x06 set volume 0-30
-void mp3_set_volume (uint16_t volume); 
-
-//0x07 set EQ0/1/2/3/4/5    Normal/Pop/Rock/Jazz/Classic/Bass
-void mp3_set_EQ (uint16_t eq); 
-
-//0x09 set device 1/2/3/4/5 U/SD/AUX/SLEEP/FLASH
-void mp3_set_device (uint16_t device); 
-
-//
-void mp3_sleep (); 
-
-//
-void mp3_reset (); 
-
-//
-void mp3_play (); 
-
-//
-void mp3_pause (); 
-
-//
-void mp3_stop (); 
-
-//specify a mp3 file in mp3 folder
-void mp3_play_mp3 (uint16_t num); 
-
-//
-void mp3_get_state (); 
-
-//
-void mp3_get_volume (); 
-
-//
-void mp3_get_u_sum (); 
-
-//
-void mp3_get_tf_sum (); 
-
-//
-void mp3_get_flash_sum (); 
-
-//
-void mp3_get_tf_current (); 
-
-//
-void mp3_get_u_current (); 
-
-//
-void mp3_get_flash_current (); 
-
-//set single loop 
-void mp3_single_loop (boolean state); 
-
-//
-void mp3_DAC (boolean state); 
-
-//
-void mp3_random_play (); 
-
+/*
+   mp3_play ();		//start play
+   mp3_play (5);	//play "0005.mp3"
+   mp3_play_mp3 (4);	//play "mp3/0004.mp3"
+   mp3_next ();		//play next 
+   mp3_prev ();		//play previous
+   mp3_set_volume (uint16_t volume);	//0~30
+   mp3_set_EQ ();	//0~5
+   mp3_pause ();
+   mp3_stop ();
+   void mp3_get_state (); 	//send get state command
+   void mp3_get_volume (); 
+   void mp3_get_u_sum (); 
+   void mp3_get_tf_sum (); 
+   void mp3_get_flash_sum (); 
+   void mp3_get_tf_current (); 
+   void mp3_get_u_current (); 
+   void mp3_get_flash_current (); 
+   void mp3_single_loop (boolean state);	//set single loop 
+   void mp3_DAC (boolean state); 
+   void mp3_random_play (); 
+ */
