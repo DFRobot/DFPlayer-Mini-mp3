@@ -62,7 +62,7 @@ void mp3_set_reply (boolean state);
 void mp3_fill_cmd (uint8_t cmd, uint16_t arg);
 
 //
-void fill_uint16_bigend (uint8_t *thebuf, uint16_t data);
+//void fill_uint16_bigend (uint8_t *thebuf, uint16_t data);
 
 //error because it is biggend mode in mp3 module
 //void fill_uint16 (uint8_t *thebuf, uint16_t data) {

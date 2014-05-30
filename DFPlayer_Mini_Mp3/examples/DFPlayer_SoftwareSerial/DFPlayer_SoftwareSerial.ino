@@ -32,7 +32,7 @@
  *	name:		DFPlayer_Mini_Mp3 sample code
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-30
- *	Description:	sample code for DFPlayer Mini, this code is test on Uno
+ *	Description:	connect DFPlayer Mini by SoftwareSerial, this code is test on Uno
  */
 
 
@@ -40,10 +40,13 @@
 #include <DFRobot_utility.h>
 #include <DFPlayer_Mini_Mp3.h>
 
+SoftwareSerial mySerial(10, 11); // RX, TX
+
 //
 void setup () {
 	Serial.begin (9600);
-	mp3_set_serial (&Serial);	//set Serial for DFPlayer-mini mp3 module 
+	mySerial.begin (9600);
+	mp3_set_serial (&mySerial);	//set softwareSerial for DFPlayer-mini mp3 module 
 	mp3_play ();
 	delay (6000);
 }
@@ -83,3 +86,4 @@ void loop () {
    void mp3_DAC (boolean state); 
    void mp3_random_play (); 
  */
+
