@@ -34,6 +34,7 @@
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-22
  *	Description:	mp3 library for DFPlayer mini board
+ *			note: mp3 file must put into mp3 folder in your tf card
  */
 #include "Arduino.h"
 #include "SoftwareSerial.h"
@@ -60,6 +61,7 @@ uint8_t recv_buf[10];
 void mp3_set_reply (boolean state); 
 
 void mp3_fill_cmd (uint8_t cmd, uint16_t arg);
+void mp3_fill_cmd (uint8_t cmd);
 
 //
 //void fill_uint16_bigend (uint8_t *thebuf, uint16_t data);
@@ -91,7 +93,8 @@ uint16_t mp3_get_checksum (uint8_t *thebuf);
 void mp3_fill_checksum (); 
 
 //
-void mp3_play (uint16_t num); 
+void mp3_play_physical (uint16_t num); 
+void mp3_play_physical (); 
 
 //
 void mp3_next (); 
@@ -123,8 +126,8 @@ void mp3_pause ();
 //
 void mp3_stop (); 
 
-//specify a mp3 file in mp3 folder
-void mp3_play_mp3 (uint16_t num); 
+//specify a mp3 file in mp3 folder in your tf card, "mp3_play (1);" mean play "mp3/0001.mp3"
+void mp3_play (uint16_t num); 
 
 //
 void mp3_get_state (); 

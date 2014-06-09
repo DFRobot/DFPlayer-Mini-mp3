@@ -37,7 +37,7 @@
  *	this code is test on leonardo
  *	you can try input:
  *	play			//play current music
- *	play 3			//play 0003.mp3
+ *	play 3			//play mp3/0003.mp3 
  *	next			//play next
  *	prev			//paly previous
  *	pause			//pause	current play
@@ -46,7 +46,7 @@
  *	current			//get current track of tf card
  *	volume			//get current volume 
  *	volume 20		//set volume to 20 (0~30)
- *	single open/close 	//set if single loop
+ *	single open/close 	//set single loop open or close
  *	reply open/close	//set if need reply
  */
  
@@ -80,7 +80,7 @@ void print_info () {
         int recv_leng = read_serial_with_timeout (Serial1, recv_buf, 10, 3);
         if (recv_leng) {
                 Serial.println ("you get:");
-                print_hex (recv_buf, 10);
+                print_hex (recv_buf, recv_leng);
         }
 }
 
@@ -90,7 +90,7 @@ void loop () {
         leng = read_serial_with_timeout (Serial1, buf, BUFSIZE, 3); //first read data from Serial1
         if (leng) {
                 Serial.print ("=>");
-                print_hex (buf, 10);
+                print_hex (buf, leng);
         }
         leng = read_serial_with_timeout (Serial, buf, BUFSIZE, 3); //read command to buf from Serial (PC)
         if (leng) {
@@ -102,11 +102,11 @@ void loop () {
                                 mp3_next ();
                                 print_info ();
                         } 
-			else if (strcmp (cmdbuf[0], "play") == 0) {
+			else if (strcmp (cmdbuf[0], "physical") == 0) {
 				if (cmdleng == 2) {
-					mp3_play (atoi (cmdbuf[1])); //get arguments
+					mp3_play_physical (atoi (cmdbuf[1])); //get arguments
 				} else {
-					mp3_play ();
+					mp3_play_physical ();
 				}
 				print_info ();
 			}
@@ -149,8 +149,12 @@ void loop () {
                                         mp3_set_reply (false);
                                 print_info ();
                         }
-                        else if (strcmp (cmdbuf[0], "mp3") == 0 && cmdleng == 2) {
-                                mp3_play_mp3 (atoi (cmdbuf[1]));
+                        else if (strcmp (cmdbuf[0], "play") == 0 && cmdleng == 2) {
+				if (cmdleng == 2) {
+					mp3_play (atoi (cmdbuf[1]));
+				} else {
+					mp3_play ();
+				}
                                 print_info ();
                         }
                         else if (strcmp (cmdbuf[0], "eq") == 0 && cmdleng == 2) {

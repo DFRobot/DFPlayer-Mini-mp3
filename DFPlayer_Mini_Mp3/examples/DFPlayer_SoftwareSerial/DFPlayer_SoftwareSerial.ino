@@ -33,9 +33,8 @@
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-30
  *	Description:	connect DFPlayer Mini by SoftwareSerial, this code is test on Uno
+ *			Note: the mp3 files must put into mp3 folder in your tf card 
  */
-
-
 #include <SoftwareSerial.h>
 #include <DFPlayer_Mini_Mp3.h>
 //#include <DFRobot_utility.h>
@@ -47,27 +46,24 @@ void setup () {
 	Serial.begin (9600);
 	mySerial.begin (9600);
 	mp3_set_serial (&mySerial);	//set softwareSerial for DFPlayer-mini mp3 module 
-	mp3_play ();
-	delay (6000);
 }
 
 
 //
 void loop () {        
+	mp3_play (1);
+	delay (6000);
 	mp3_next ();
 	delay (6000);
 	mp3_prev ();
 	delay (6000);
 	mp3_play (4);
 	delay (6000);
-	mp3_play (1);
-	delay (6000);
 }
 
 /*
    mp3_play ();		//start play
-   mp3_play (5);	//play "0005.mp3"
-   mp3_play_mp3 (4);	//play "mp3/0004.mp3"
+   mp3_play (5);	//play "mp3/0005.mp3"
    mp3_next ();		//play next 
    mp3_prev ();		//play previous
    mp3_set_volume (uint16_t volume);	//0~30

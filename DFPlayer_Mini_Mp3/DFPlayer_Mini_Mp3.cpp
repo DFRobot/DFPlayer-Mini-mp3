@@ -34,6 +34,7 @@
  *	Author:		lisper <lisper.li@dfrobot.com>
  *	Date:		2014-05-22
  *	Description:	mp3 library for DFPlayer mini board
+ *			note: mp3 file must put into mp3 folder in your tf card
  */
 
 
@@ -111,20 +112,33 @@ void mp3_send_cmd (uint8_t cmd, uint16_t arg) {
 	send_func ();
 }
 
+//
+void mp3_send_cmd (uint8_t cmd) {
+	send_buf[3] = cmd;
+	fill_uint16_bigend ((send_buf+5), 0);
+	mp3_fill_checksum ();
+	send_func ();
+}
+
 
 //
-void mp3_play (uint16_t num) {
+void mp3_play_physical (uint16_t num) {
 	mp3_send_cmd (0x03, num);
 }
 
 //
+void mp3_play_physical () {
+	mp3_send_cmd (0x03);
+}
+
+//
 void mp3_next () {
-	mp3_send_cmd (0x01, 0);
+	mp3_send_cmd (0x01);
 }
 
 //
 void mp3_prev () {
-	mp3_send_cmd (0x02, 0);
+	mp3_send_cmd (0x02);
 }
 
 //0x06 set volume 0-30
@@ -144,74 +158,74 @@ void mp3_set_device (uint16_t device) {
 
 //
 void mp3_sleep () {
-	mp3_send_cmd (0x0a, 0);
+	mp3_send_cmd (0x0a);
 }
 
 //
 void mp3_reset () {
-	mp3_send_cmd (0x0c, 0);
+	mp3_send_cmd (0x0c);
 }
 
 //
 void mp3_play () {
-	mp3_send_cmd (0x0d, 0);
+	mp3_send_cmd (0x0d);
 }
 
 //
 void mp3_pause () {
-	mp3_send_cmd (0x0e, 0);
+	mp3_send_cmd (0x0e);
 }
 
 //
 void mp3_stop () {
-	mp3_send_cmd (0x16, 0);
+	mp3_send_cmd (0x16);
 }
 
-//
-void mp3_play_mp3 (uint16_t num) {
+//play mp3 file in mp3 folder in your tf card
+void mp3_play (uint16_t num) {
 	mp3_send_cmd (0x12, num);
 }
 
 //
 void mp3_get_state () {
-	mp3_send_cmd (0x42, 0);
+	mp3_send_cmd (0x42);
 }
 
 //
 void mp3_get_volume () {
-	mp3_send_cmd (0x43, 0);
+	mp3_send_cmd (0x43);
 }
 
 
 //
 void mp3_get_u_sum () {
-	mp3_send_cmd (0x47, 0);
+	mp3_send_cmd (0x47);
 }
 
 //
 void mp3_get_tf_sum () {
-	mp3_send_cmd (0x48, 0);
+	mp3_send_cmd (0x48);
 }
 
 //
 void mp3_get_flash_sum () {
-	mp3_send_cmd (0x49, 0);
+	mp3_send_cmd (0x49);
 }
 
 
 //
 void mp3_get_tf_current () {
-	mp3_send_cmd (0x4c, 0);
+	mp3_send_cmd (0x4c);
 }
 
 //
 void mp3_get_u_current () {
-	mp3_send_cmd (0x4b, 0);
+	mp3_send_cmd (0x4b);
 }
 
 //
 void mp3_get_flash_current () {
-	mp3_send_cmd (0x4d, 0);
+	mp3_send_cmd (0x4d);
 }
 
 //
@@ -226,6 +240,7 @@ void mp3_DAC (boolean state) {
 
 //
 void mp3_random_play () {
-	mp3_send_cmd (0x18, 0);
+	mp3_send_cmd (0x18);
 }
+
 
