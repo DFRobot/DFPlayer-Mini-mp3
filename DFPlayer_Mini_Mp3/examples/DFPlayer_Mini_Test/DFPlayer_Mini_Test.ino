@@ -67,7 +67,7 @@ void setup () {
         Serial.begin (9600);
         while (!Serial);
 
-        mp3_set_serial (&Serial1);	//set Serial1 for DFPlayer-mini mp3 module 
+        mp3_set_serial (Serial1);	//set Serial1 for DFPlayer-mini mp3 module 
         mp3_set_volume (15);
         mp3_get_tf_sum ();
         print_info ();

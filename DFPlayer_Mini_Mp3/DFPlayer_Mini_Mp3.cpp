@@ -1,4 +1,6 @@
 /*******************************************************************************
+ * Copyright (C) 2014 DFRobot						       *
+ *									       *
  * DFPlayer_Mini_Mp3, This library provides a quite complete function for      * 
  * DFPlayer mini mp3 module.                                                   *
  * www.github.com/dfrobot/DFPlayer_Mini_Mp3 (github as default source provider)*
@@ -28,7 +30,6 @@
  ******************************************************************************/
 
 /*
- *	Copyright:	DFRobot
  *	name:		DFPlayer_Mini_Mp3
  *	version:	1.0
  *	Author:		lisper <lisper.li@dfrobot.com>
@@ -38,15 +39,16 @@
  */
 
 
-#include <SoftwareSerial.h>
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+//#include  "DFPlayer_Mini_Mp3.h"
 
 extern uint8_t send_buf[10];
 extern uint8_t recv_buf[10];
 
 static void(*send_func)() = NULL;
-static HardwareSerial *hserial = NULL;
-static SoftwareSerial *sserial = NULL;
+static HardwareSerial * _hardware_serial = NULL;
+static SoftwareSerial * _software_serial = NULL;
 static boolean is_reply = false;
 
 //
@@ -62,7 +64,7 @@ static void fill_uint16_bigend (uint8_t *thebuf, uint16_t data) {
 }
 
 
-//
+//calc checksum (1~6 byte)
 uint16_t mp3_get_checksum (uint8_t *thebuf) {
 	uint16_t sum = 0;
 	for (int i=1; i<7; i++) {
@@ -71,36 +73,36 @@ uint16_t mp3_get_checksum (uint8_t *thebuf) {
 	return -sum;
 }
 
-//
+//fill checksum to send_buf (7~8 byte)
 void mp3_fill_checksum () {
 	uint16_t checksum = mp3_get_checksum (send_buf);
-	send_buf[7] = (uint8_t)(checksum>>8);
-	send_buf[8] = (uint8_t)checksum;
+	fill_uint16_bigend (send_buf+7, checksum);
 }
 
 //
 void h_send_func () {
 	for (int i=0; i<10; i++) {
-		hserial->write (send_buf[i]);
+		_hardware_serial->write (send_buf[i]);
 	}
 }
 
 //
 void s_send_func () {
 	for (int i=0; i<10; i++) {
-		sserial->write (send_buf[i]);
+		_software_serial->write (send_buf[i]);
 	}
 }
 
 //
-void mp3_set_serial (HardwareSerial *theSerial) {
-	hserial = theSerial;
+//void mp3_set_serial (HardwareSerial *theSerial) {
+void mp3_set_serial (HardwareSerial &theSerial) {
+	_hardware_serial = &theSerial;
 	send_func = h_send_func;
 }
 
 //
-void mp3_set_serial (SoftwareSerial *theSerial) {
-	sserial = theSerial;
+void mp3_set_serial (SoftwareSerial &theSerial) {
+	_software_serial = &theSerial;
 	send_func = s_send_func;
 }
 
@@ -223,6 +225,7 @@ void mp3_get_u_current () {
 	mp3_send_cmd (0x4b);
 }
 
+
 //
 void mp3_get_flash_current () {
 	mp3_send_cmd (0x4d);
@@ -231,6 +234,14 @@ void mp3_get_flash_current () {
 //
 void mp3_single_loop (boolean state) {
 	mp3_send_cmd (0x19, !state);
+}
+
+//add 
+void mp3_single_play (uint16_t num) {
+	mp3_play (num);
+	delay (10);
+	mp3_single_loop (true); 
+	//mp3_send_cmd (0x19, !state);
 }
 
 //

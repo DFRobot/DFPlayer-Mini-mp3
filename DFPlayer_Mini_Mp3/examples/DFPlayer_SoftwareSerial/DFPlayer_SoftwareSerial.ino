@@ -45,7 +45,8 @@ SoftwareSerial mySerial(10, 11); // RX, TX
 void setup () {
 	Serial.begin (9600);
 	mySerial.begin (9600);
-	mp3_set_serial (&mySerial);	//set softwareSerial for DFPlayer-mini mp3 module 
+	mp3_set_serial (mySerial);	//set softwareSerial for DFPlayer-mini mp3 module 
+	mp3_set_volume (15);
 }
 
 

@@ -1,5 +1,7 @@
 /*******************************************************************************
- * DFPlayer_Mini_Mp3, This library provides a quite complete function for      * 
+ * Copyright (C) 2014 DFRobot                                                  *
+ *                                                                             *
+ * DFPlayer_Mini_Mp3, This library provides a quite complete function for      *
  * DFPlayer mini mp3 module.                                                   *
  * www.github.com/dfrobot/DFPlayer_Mini_Mp3 (github as default source provider)*
  *  DFRobot-A great source for opensource hardware and robot.                  *
@@ -24,17 +26,18 @@
  * You should have received a copy of the GNU Lesser General Public            *
  * License along with DFPlayer_Mini_Mp3. If not, see                           *
  * <http://www.gnu.org/licenses/>.                                             *
- *									       *
+ *                                                                             *
  ******************************************************************************/
 
 /*
- *	Copyright:	DFRobot
- *	name:		DFPlayer_Mini_Mp3
- *	version:	1.0
- *	Author:		lisper <lisper.li@dfrobot.com>
- *	Date:		2014-05-22
- *	Description:	mp3 library for DFPlayer mini board
- *			note: mp3 file must put into mp3 folder in your tf card
+ *	name:				DFPlayer_Mini_Mp3
+ *	version:			1.0
+ *	Author:				lisper <lisper.li@dfrobot.com>
+ *	Date:				2014-05-22
+ *	official website:		http://www.dfrobot.com
+ *	Products page:			http://www.dfrobot.com/index.php?route=product/product&product_id=1121#.U5Z_RYbUN8E
+ *	Description:			mp3 library for DFPlayer mini board
+ *					note: mp3 file must put into mp3 folder in your tf card
  */
 #include "Arduino.h"
 #include "SoftwareSerial.h"
@@ -72,19 +75,19 @@ void mp3_fill_cmd (uint8_t cmd);
 //}
 
 //
-void mp3_set_serial (HardwareSerial *theSerial); 
+void mp3_set_serial (HardwareSerial &theSerial); 
 
 //
-void mp3_set_serial (SoftwareSerial *theSerial); 
+void mp3_set_serial (SoftwareSerial &theSerial); 
 
 //
-void h_send_func (); 
+//void h_send_func (); 
 
 //
-void s_send_func (); 
+//void s_send_func (); 
 
 //
-void mp3_send_cmd (); 
+//void mp3_send_cmd (); 
 
 //
 uint16_t mp3_get_checksum (uint8_t *thebuf); 
@@ -118,13 +121,13 @@ void mp3_sleep ();
 void mp3_reset (); 
 
 //
-void mp3_play (); 
-
-//
 void mp3_pause (); 
 
 //
 void mp3_stop (); 
+
+//
+void mp3_play (); 
 
 //specify a mp3 file in mp3 folder in your tf card, "mp3_play (1);" mean play "mp3/0001.mp3"
 void mp3_play (uint16_t num); 
@@ -155,6 +158,8 @@ void mp3_get_flash_current ();
 
 //set single loop 
 void mp3_single_loop (boolean state); 
+
+void mp3_single_play (uint16_t num); 
 
 //
 void mp3_DAC (boolean state); 

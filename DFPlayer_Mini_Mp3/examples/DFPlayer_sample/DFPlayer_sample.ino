@@ -39,12 +39,12 @@
 
 #include <SoftwareSerial.h>
 #include <DFPlayer_Mini_Mp3.h>
-//#include <DFRobot_utility.h>
 
 //
 void setup () {
 	Serial.begin (9600);
-	mp3_set_serial (&Serial);	//set Serial for DFPlayer-mini mp3 module 
+	mp3_set_serial (Serial);	//set Serial for DFPlayer-mini mp3 module 
+	mp3_set_volume (15);
 }
 
 
