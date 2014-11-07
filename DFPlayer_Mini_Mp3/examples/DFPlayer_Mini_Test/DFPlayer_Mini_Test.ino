@@ -50,9 +50,9 @@
  *	reply open/close	//set if need reply
  */
  
- 
 #include <SoftwareSerial.h>
-#include "DFRobot_utility.h"
+#include <DFRobot_utility.h>
+
 #include "DFPlayer_Mini_Mp3.h"
 
 #define BUFSIZE 20	//buf size
@@ -75,24 +75,24 @@ void setup () {
 
 void print_info () {
         Serial.println ("you send:");
-        print_hex (send_buf, 10);
+        printHex (send_buf, 10);
         delay (100);
-        int recv_leng = read_serial_with_timeout (Serial1, recv_buf, 10, 3);
+        int recv_leng = serialRead (Serial1, recv_buf, 10, 3);
         if (recv_leng) {
                 Serial.println ("you get:");
-                print_hex (recv_buf, recv_leng);
+                printHex (recv_buf, recv_leng);
         }
 }
 
 //
 void loop () {        
         int leng;
-        leng = read_serial_with_timeout (Serial1, buf, BUFSIZE, 3); //first read data from Serial1
+        leng = serialRead (Serial1, buf, BUFSIZE, 3); //first read data from Serial1
         if (leng) {
                 Serial.print ("=>");
-                print_hex (buf, leng);
+                printHex (buf, leng);
         }
-        leng = read_serial_with_timeout (Serial, buf, BUFSIZE, 3); //read command to buf from Serial (PC)
+        leng = serialRead (Serial, buf, BUFSIZE, 3); //read command to buf from Serial (PC)
         if (leng) {
                 buf[leng] = '\0';
                 Serial.println ((char*)buf);

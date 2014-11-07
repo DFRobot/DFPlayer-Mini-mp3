@@ -36,7 +36,6 @@
  *			note: mp3 file must put into mp3 folder in your tf card
  */
 
-
 #include <SoftwareSerial.h>
 #include <DFPlayer_Mini_Mp3.h>
 
