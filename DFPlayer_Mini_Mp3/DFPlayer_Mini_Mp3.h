@@ -210,3 +210,10 @@ void mp3_DAC (boolean state);
 //
 void mp3_random_play (); 
 
+// Query total file numbers of a folder
+void mp3_get_folder_sum (uint16_t folder);
+// Wait for mp3_get_folder_sum reply
+int mp3_wait_folder_sum ();
+
+// Play mp3 file in selected folder
+void mp3_play_file_in_folder (uint16_t folder, uint16_t num);

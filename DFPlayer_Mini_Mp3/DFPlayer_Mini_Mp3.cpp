@@ -372,4 +372,19 @@ void mp3_random_play () {
 	mp3_send_cmd (0x18);
 }
 
+// Query total file numbers of a folder
+void mp3_get_folder_sum (uint16_t folder) {
+	mp3_send_cmd (0x4E, folder);
+}
+// Wait for mp3_get_folder_sum reply
+int mp3_wait_folder_sum () {
+	return mp3_recv_int_cmd(0x4E);
+}
+
+// Play mp3 file in selected folder
+void mp3_play_file_in_folder (uint16_t folder, uint16_t num) {
+	//mp3_send_cmd (0x0F, folder, num);
+	Serial.println(folder << 4, HEX);
+	mp3_send_cmd (0x14, folder << 4, num);
+}
 
