@@ -106,20 +106,26 @@ void mp3_set_serial (SoftwareSerial &theSerial) {
 }
 
 //
-void mp3_send_cmd (uint8_t cmd, uint16_t arg) {
+void mp3_send_cmd (uint8_t cmd, uint16_t high_arg, uint16_t low_arg) {
 	send_buf[3] = cmd;
-	fill_uint16_bigend ((send_buf+5), arg);
+
+	send_buf[5] = high_arg;
+	send_buf[6] = low_arg;
+
 	mp3_fill_checksum ();
 	send_func ();
 	delay(50);
 }
 
 //
+void mp3_send_cmd (uint8_t cmd, uint16_t low_arg) {
+	mp3_send_cmd(cmd, 0, low_arg);
+}
+
+//
 void mp3_send_cmd (uint8_t cmd) {
-	send_buf[3] = cmd;
-	fill_uint16_bigend ((send_buf+5), 0);
-	mp3_fill_checksum ();
-	send_func ();
+	mp3_send_cmd(cmd, 0, 0);
+	
 	delay(50);
 }
 

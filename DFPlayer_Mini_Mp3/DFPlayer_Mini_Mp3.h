@@ -87,7 +87,13 @@ void mp3_set_serial (SoftwareSerial &theSerial);
 //void s_send_func (); 
 
 //
-//void mp3_send_cmd (); 
+//void mp3_send_cmd (uint8_t cmd, uint16_t high_arg, uint16_t low_arg);
+
+//
+//void mp3_send_cmd (uint8_t cmd, uint16_t low_arg);
+
+//
+//void mp3_send_cmd (uint8_t cmd);
 
 //
 uint16_t mp3_get_checksum (uint8_t *thebuf); 
