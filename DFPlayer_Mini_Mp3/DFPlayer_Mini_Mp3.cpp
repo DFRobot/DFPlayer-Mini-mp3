@@ -46,6 +46,7 @@ extern uint8_t send_buf[10];
 extern uint8_t recv_buf[10];
 
 static void(*send_func)() = NULL;
+static boolean(*recv_func)() = NULL;
 static HardwareSerial * _hardware_serial = NULL;
 static SoftwareSerial * _software_serial = NULL;
 static boolean is_reply = false;
@@ -92,17 +93,56 @@ void s_send_func () {
 	}
 }
 
+// Reset buffer
+void reset_recv_buf () {
+	for (int i=0; i<10; i++) {
+		recv_buf[i] = 0;
+	}
+}
+
+// Read data from hardware serial
+boolean h_recv_func () {
+	reset_recv_buf();
+
+	for (int i=0; i<10; i++) {
+		int b = _hardware_serial->read ();
+		if (b == -1) {
+			return false;
+		}
+		recv_buf[i] = b;
+	}
+			
+	return true;
+}
+
+// Read data from software serial
+boolean s_recv_func () {
+	reset_recv_buf();
+
+	for (int i=0; i<10; i++) {
+		int b = _software_serial->read ();
+		if (b == -1) {
+			return false;
+		}
+		recv_buf[i] = b;
+	}
+			
+	return true;
+}
+
 //
 //void mp3_set_serial (HardwareSerial *theSerial) {
 void mp3_set_serial (HardwareSerial &theSerial) {
 	_hardware_serial = &theSerial;
 	send_func = h_send_func;
+	recv_func = h_recv_func;
 }
 
 //
 void mp3_set_serial (SoftwareSerial &theSerial) {
 	_software_serial = &theSerial;
 	send_func = s_send_func;
+	recv_func = s_recv_func;
 }
 
 //
@@ -127,6 +167,50 @@ void mp3_send_cmd (uint8_t cmd) {
 	mp3_send_cmd(cmd, 0, 0);
 	
 	delay(50);
+}
+
+// Wait and receive replay for specific command
+uint8_t* mp3_recv_cmd (uint8_t wait) {
+	uint8_t static result[2] = {0, 0};
+	uint8_t received = 0;
+
+	do {
+	    boolean read = recv_func();
+
+	    if (read) {
+	    	received = recv_buf[3];
+
+	    	if (wait != 0 && wait == received) {
+	            result[0] = recv_buf[5];
+	            result[1] = recv_buf[6];
+	    	}
+	    } else {
+	    	delay(50);
+	    }
+	} while (wait != 0 && wait != received);
+
+    return result;
+}
+
+// Receive replay
+uint8_t* mp3_recv_cmd () {
+	return mp3_recv_cmd(0);
+}
+
+// Wait and receive replay as int for specific command
+int mp3_recv_int_cmd (int wait) {
+	int res = 0;
+	uint8_t* result = mp3_recv_cmd(wait);
+
+    res = (unsigned char)result[0];
+    res = res * 0xFF + (unsigned char)result[1];
+
+    return res;
+}
+
+// Receive replay as int
+int mp3_recv_int_cmd () {
+	return mp3_recv_int_cmd(0);
 }
 
 

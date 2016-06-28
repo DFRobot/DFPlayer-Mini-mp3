@@ -95,6 +95,27 @@ void mp3_set_serial (SoftwareSerial &theSerial);
 //
 //void mp3_send_cmd (uint8_t cmd);
 
+// Reset buffer
+//void reset_recv_buf ();
+
+// Read data from hardware serial
+//boolean h_recv_func ();
+
+// Read data from software serial
+//boolean s_recv_func ();
+
+// Wait and receive replay for specific command
+//uint8_t* mp3_recv_cmd (uint8_t wait);
+
+// Receive replay
+//uint8_t* mp3_recv_cmd ();
+
+// Wait and receive replay as int for specific command
+//int mp3_recv_int_cmd (int wait);
+
+// Receive replay as int
+//int mp3_recv_int_cmd ();
+
 //
 uint16_t mp3_get_checksum (uint8_t *thebuf); 
 
