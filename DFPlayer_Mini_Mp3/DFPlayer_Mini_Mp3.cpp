@@ -165,8 +165,6 @@ void mp3_send_cmd (uint8_t cmd, uint16_t low_arg) {
 //
 void mp3_send_cmd (uint8_t cmd) {
 	mp3_send_cmd(cmd, 0, 0);
-	
-	delay(50);
 }
 
 // Wait and receive replay for specific command
