@@ -111,6 +111,7 @@ void mp3_send_cmd (uint8_t cmd, uint16_t arg) {
 	fill_uint16_bigend ((send_buf+5), arg);
 	mp3_fill_checksum ();
 	send_func ();
+	delay(50);
 }
 
 //
@@ -119,6 +120,7 @@ void mp3_send_cmd (uint8_t cmd) {
 	fill_uint16_bigend ((send_buf+5), 0);
 	mp3_fill_checksum ();
 	send_func ();
+	delay(50);
 }
 
 
