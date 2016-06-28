@@ -161,27 +161,43 @@ void mp3_play (uint16_t num);
 
 //
 void mp3_get_state (); 
+// Wait for mp3_get_state reply
+int mp3_wait_state ();
 
 //
 void mp3_get_volume (); 
+// Wait for mp3_get_volume reply
+int mp3_wait_volume ();
 
 //
 void mp3_get_u_sum (); 
+// Wait for mp3_get_u_sum reply
+int mp3_wait_u_sum ();
 
 //
 void mp3_get_tf_sum (); 
+// Wait for mp3_get_tf_sum reply
+int mp3_wait_tf_sum ();
 
 //
 void mp3_get_flash_sum (); 
+// Wait for mp3_get_flash_sum reply
+int mp3_wait_flash_sum ();
 
 //
 void mp3_get_tf_current (); 
+// Wait for mp3_get_tf_current reply
+int mp3_wait_tf_current();
 
 //
 void mp3_get_u_current (); 
+// Wait for mp3_get_u_current reply
+int mp3_wait_u_current ();
 
 //
 void mp3_get_flash_current (); 
+// Wait for mp3_get_flash_current reply
+int mp3_wait_flash_current ();
 
 //set single loop 
 void mp3_single_loop (boolean state); 

@@ -281,43 +281,72 @@ void mp3_play (uint16_t num) {
 void mp3_get_state () {
 	mp3_send_cmd (0x42);
 }
+// Wait for mp3_get_state reply
+int mp3_wait_state () {
+	return mp3_recv_int_cmd(0x42);
+}
 
 //
 void mp3_get_volume () {
 	mp3_send_cmd (0x43);
 }
-
+// Wait for mp3_get_volume reply
+int mp3_wait_volume () {
+	return mp3_recv_int_cmd(0x43);
+}
 
 //
 void mp3_get_u_sum () {
 	mp3_send_cmd (0x47);
+}
+// Wait for mp3_get_u_sum reply
+int mp3_wait_u_sum () {
+	return mp3_recv_int_cmd(0x47);
 }
 
 //
 void mp3_get_tf_sum () {
 	mp3_send_cmd (0x48);
 }
+// Wait for mp3_get_tf_sum reply
+int mp3_wait_tf_sum () {
+	return mp3_recv_int_cmd(0x48);
+}
 
 //
 void mp3_get_flash_sum () {
 	mp3_send_cmd (0x49);
 }
-
+// Wait for mp3_get_flash_sum reply
+int mp3_wait_flash_sum () {
+	return mp3_recv_int_cmd(0x49);
+}
 
 //
 void mp3_get_tf_current () {
 	mp3_send_cmd (0x4c);
+}
+// Wait for mp3_get_tf_current reply
+int mp3_wait_tf_current () {
+	return mp3_recv_int_cmd(0x4c);
 }
 
 //
 void mp3_get_u_current () {
 	mp3_send_cmd (0x4b);
 }
-
+// Wait for mp3_get_u_current reply
+int mp3_wait_u_current() {
+	return mp3_recv_int_cmd(0x4b);
+}
 
 //
 void mp3_get_flash_current () {
 	mp3_send_cmd (0x4d);
+}
+// Wait for mp3_get_flash_current reply
+int mp3_wait_flash_current () {
+	return mp3_recv_int_cmd(0x4d);
 }
 
 //
