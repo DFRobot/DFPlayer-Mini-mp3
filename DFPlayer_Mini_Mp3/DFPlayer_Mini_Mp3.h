@@ -80,6 +80,9 @@ void mp3_set_serial (HardwareSerial &theSerial);
 //
 void mp3_set_serial (SoftwareSerial &theSerial); 
 
+// Set the serial port used for logging
+void mp3_set_debug_serial (HardwareSerial &theSerial);
+
 //
 //void h_send_func (); 
 

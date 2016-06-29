@@ -49,6 +49,7 @@ static void(*send_func)() = NULL;
 static boolean(*recv_func)() = NULL;
 static HardwareSerial * _hardware_serial = NULL;
 static SoftwareSerial * _software_serial = NULL;
+static HardwareSerial * _debug_serial = NULL;
 static boolean is_reply = false;
 
 //
@@ -143,6 +144,11 @@ void mp3_set_serial (SoftwareSerial &theSerial) {
 	_software_serial = &theSerial;
 	send_func = s_send_func;
 	recv_func = s_recv_func;
+}
+
+// Set the serial port used for logging
+void mp3_set_debug_serial (HardwareSerial &theSerial) {
+	_debug_serial = &theSerial;
 }
 
 //
