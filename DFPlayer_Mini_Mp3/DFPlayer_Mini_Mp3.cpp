@@ -184,7 +184,11 @@ uint8_t* mp3_recv_cmd (uint8_t wait) {
 	    if (read) {
 	    	received = recv_buf[3];
 
-	    	if (wait != 0 && wait == received) {
+	    	if (received == 0x40) {
+	    		// Error responce
+	    		(* _debug_serial).print("Error responce with code ");
+	    		(* _debug_serial).println(recv_buf[6]);
+	    	}else if (wait != 0 && wait == received) {
 	            result[0] = recv_buf[5];
 	            result[1] = recv_buf[6];
 	    	}
