@@ -118,8 +118,13 @@ boolean h_recv_func () {
 
 // Read data from software serial
 boolean s_recv_func () {
+	delay(5);
+	
 	reset_recv_buf();
 
+	if (_software_serial->available () < 10) {
+		return false;
+	}
 	for (int i=0; i<10; i++) {
 		int b = _software_serial->read ();
 		if (b == -1) {
