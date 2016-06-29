@@ -173,6 +173,14 @@ void mp3_send_cmd (uint8_t cmd) {
 	mp3_send_cmd(cmd, 0, 0);
 }
 
+// Send byte1 (0-15) as first byte of high and byte234 (0 - 4095) splitted in high byte 2 and low
+void mp3_send_cmd (uint8_t cmd, uint8_t byte1, uint32_t byte234) {
+	uint16_t low = byte234 & 0x00FF;
+	uint16_t high = (byte1 << 4) | (byte234 >> 8);
+
+	mp3_send_cmd (cmd, high, low);
+}
+
 // Wait and receive replay for specific command
 uint8_t* mp3_recv_cmd (uint8_t wait) {
 	uint8_t static result[2] = {0, 0};
@@ -392,9 +400,7 @@ int mp3_wait_folder_sum () {
 }
 
 // Play mp3 file in selected folder
-void mp3_play_file_in_folder (uint16_t folder, uint16_t num) {
-	//mp3_send_cmd (0x0F, folder, num);
-	Serial.println(folder << 4, HEX);
-	mp3_send_cmd (0x14, folder << 4, num);
+void mp3_play_file_in_folder (uint8_t folder, uint32_t num) {
+	mp3_send_cmd (0x14, folder, num);
 }
 
