@@ -45,6 +45,8 @@
 extern uint8_t send_buf[10];
 extern uint8_t recv_buf[10];
 
+unsigned long _last_call = 0;
+
 static void(*send_func)() = NULL;
 static boolean(*recv_func)() = NULL;
 static HardwareSerial * _hardware_serial = NULL;
@@ -158,6 +160,11 @@ void mp3_set_debug_serial (HardwareSerial &theSerial) {
 
 //
 void mp3_send_cmd (uint8_t cmd, uint16_t high_arg, uint16_t low_arg) {
+	unsigned long d = abs(millis() - _last_call);
+	if (d < 50) {
+		delay(50 - d);
+	}
+
 	send_buf[3] = cmd;
 
 	send_buf[5] = high_arg;
@@ -165,7 +172,8 @@ void mp3_send_cmd (uint8_t cmd, uint16_t high_arg, uint16_t low_arg) {
 
 	mp3_fill_checksum ();
 	send_func ();
-	delay(50);
+
+	_last_call = millis();
 }
 
 //
