@@ -80,6 +80,9 @@ void mp3_set_serial (HardwareSerial &theSerial);
 //
 void mp3_set_serial (SoftwareSerial &theSerial); 
 
+// Set the serial port used for logging
+void mp3_set_debug_serial (HardwareSerial &theSerial);
+
 //
 //void h_send_func (); 
 
@@ -87,7 +90,37 @@ void mp3_set_serial (SoftwareSerial &theSerial);
 //void s_send_func (); 
 
 //
-//void mp3_send_cmd (); 
+//void mp3_send_cmd (uint8_t cmd, uint16_t high_arg, uint16_t low_arg);
+
+//
+//void mp3_send_cmd (uint8_t cmd, uint16_t low_arg);
+
+//
+//void mp3_send_cmd (uint8_t cmd);
+
+// Send byte1 (0-15) as first byte of high and byte234 (0 - 4095) splitted in high byte 2 and low
+//void mp3_send_cmd (uint8_t cmd, uint8_t byte1, uint32_t byte234)
+
+// Reset buffer
+//void reset_recv_buf ();
+
+// Read data from hardware serial
+//boolean h_recv_func ();
+
+// Read data from software serial
+//boolean s_recv_func ();
+
+// Wait and receive replay for specific command
+//uint8_t* mp3_recv_cmd (uint8_t wait);
+
+// Receive replay
+//uint8_t* mp3_recv_cmd ();
+
+// Wait and receive replay as int for specific command
+//int mp3_recv_int_cmd (int wait);
+
+// Receive replay as int
+//int mp3_recv_int_cmd ();
 
 //
 uint16_t mp3_get_checksum (uint8_t *thebuf); 
@@ -134,27 +167,43 @@ void mp3_play (uint16_t num);
 
 //
 void mp3_get_state (); 
+// Wait for mp3_get_state reply
+int mp3_wait_state ();
 
 //
 void mp3_get_volume (); 
+// Wait for mp3_get_volume reply
+int mp3_wait_volume ();
 
 //
 void mp3_get_u_sum (); 
+// Wait for mp3_get_u_sum reply
+int mp3_wait_u_sum ();
 
 //
 void mp3_get_tf_sum (); 
+// Wait for mp3_get_tf_sum reply
+int mp3_wait_tf_sum ();
 
 //
 void mp3_get_flash_sum (); 
+// Wait for mp3_get_flash_sum reply
+int mp3_wait_flash_sum ();
 
 //
 void mp3_get_tf_current (); 
+// Wait for mp3_get_tf_current reply
+int mp3_wait_tf_current();
 
 //
 void mp3_get_u_current (); 
+// Wait for mp3_get_u_current reply
+int mp3_wait_u_current ();
 
 //
 void mp3_get_flash_current (); 
+// Wait for mp3_get_flash_current reply
+int mp3_wait_flash_current ();
 
 //set single loop 
 void mp3_single_loop (boolean state); 
@@ -167,3 +216,10 @@ void mp3_DAC (boolean state);
 //
 void mp3_random_play (); 
 
+// Query total file numbers of a folder
+void mp3_get_folder_sum (uint16_t folder);
+// Wait for mp3_get_folder_sum reply
+int mp3_wait_folder_sum ();
+
+// Play mp3 file in selected folder
+void mp3_play_file_in_folder (uint8_t folder, uint32_t num);
