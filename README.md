@@ -1,3 +1,6 @@
+# This Library is deprecated. Please check here for the new library:
+https://github.com/DFRobot/DFRobotDFPlayerMini
+
 DFPlayer-Mini-mp3
 =================
 
