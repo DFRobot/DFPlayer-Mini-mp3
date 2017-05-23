@@ -4,13 +4,10 @@ https://github.com/DFRobot/DFRobotDFPlayerMini
 DFPlayer-Mini-mp3
 =================
 
-Install instructions:
+Install instructions:  
+Search the Arduino Library Manager and install the DFPlayer Mini Mp3 library.
 
-* Download file
-* decompress
-* copy inside folder to your Arduino library folder
-* restart your Arduino IDE
+The samples may also require the DFRobot utility library.
 
-
-Check the wiki for more information:
+Check the wiki for more information on this module:
 http://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299
