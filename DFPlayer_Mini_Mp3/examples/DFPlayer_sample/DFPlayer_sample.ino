@@ -61,7 +61,7 @@ void loop () {
 
 /*
    mp3_play ();		//start play
-   mp3_play (5);	//play "mp3/0005.mp3"
+   mp3_play (5);	//play "SD:/mp3/0005.mp3"
    mp3_next ();		//play next 
    mp3_prev ();		//play previous
    mp3_set_volume (uint16_t volume);	//0~30
@@ -79,4 +79,13 @@ void loop () {
    void mp3_single_loop (boolean state);	//set single loop 
    void mp3_DAC (boolean state); 
    void mp3_random_play (); 
+   void mp3_play_file_in_folder (uint8_t folder, uint32_t num);
+   mp3_play_file_in_folder(1, 5);	//play "SD:/01/0005.mp3"
+   == Warning for mp3_play_file_in_folder ==
+   - You cannot add suffix to directory
+     Good:  "SD:/01/0005_music.mp3"
+     Wrong: "SD:/01_favorite/0005.mp3"
+   - You need 2 digit number for folder name and 4 digit number for file name.
+     Good:  "SD:/01/0005.mp3"
+     Wrong: "SD:/1/5.mp3"
  */
